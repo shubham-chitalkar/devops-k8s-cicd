@@ -19,6 +19,6 @@ spec:
     spec:
       containers:
         - name: devops-app
-          image: shubham336/devops-k8s-app:1.0
+          image: shubham336/devops-k8s-app:1.1
           ports:
             - containerPort: 5000
