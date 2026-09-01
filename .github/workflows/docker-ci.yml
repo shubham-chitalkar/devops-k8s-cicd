@@ -21,7 +21,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
       - name: Build Docker image
-        run: docker build -t shubham336/devops-k8s-app:1.1 ./app
+        run: docker build -t shubham336/devops-k8s-app:${{ github.sha }} ./app
 
       - name: Push Docker image
-        run: docker push shubham336/devops-k8s-app:1.1
+        run: docker push shubham336/devops-k8s-app:${{ github.sha }}
