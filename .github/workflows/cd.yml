@@ -1,0 +1,32 @@
+name: Kubernetes CD
+
+on:
+  workflow_run:
+    workflows: ["Docker CI"]
+    types:
+      - completed
+
+jobs:
+  deploy:
+    runs-on: self-hosted
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set image tag
+        run: echo "IMAGE_TAG=${{ github.event.workflow_run.head_sha }}" >> $GITHUB_ENV
+
+      - name: Check kubectl
+        run: |
+          kubectl version --client
+          kubectl config current-context || true
+
+      - name: Deploy to Kubernetes
+        run: |
+          kubectl set image deployment/devops-app \
+            devops-app=shubham336/devops-k8s-app:${IMAGE_TAG}
+
+      - name: Check rollout status
+        run: |
+          kubectl rollout status deployment/devops-app
